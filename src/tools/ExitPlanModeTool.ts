@@ -157,7 +157,7 @@ export const exitPlanModeToolDefinition: ToolDefinition = {
  */
 export function validateExitPlanModeInput(
   input: unknown
-): input is ExitPlanModeInput | string {
+): boolean | string {
   if (input !== undefined && input !== null && typeof input !== 'object') {
     return 'Input must be an object or empty';
   }
@@ -246,9 +246,10 @@ export function createExitPlanModeToolHandler(
   context: ExecutionContext
 ): ToolHandler<ExitPlanModeInput, ExitPlanModeOutput> {
   return {
+    name: 'ExitPlanMode',
     definition: exitPlanModeToolDefinition,
 
-    validateInput(input: unknown): input is ExitPlanModeInput | string {
+    validateInput(input: unknown): boolean | string {
       return validateExitPlanModeInput(input);
     },
 

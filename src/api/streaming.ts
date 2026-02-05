@@ -318,7 +318,7 @@ export async function readStream(
           builder.processEvent(event);
 
           // Gọi callbacks tương ứng
-          this.triggerCallbacks(event, builder, options);
+          triggerCallbacks(event, builder, options);
         }
       }
     }

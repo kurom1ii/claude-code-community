@@ -172,3 +172,150 @@ export {
   createAssistantMessage,
   createToolResultMessage,
 } from './client';
+
+// ============================================================================
+// Token Utilities - Token counting và estimation
+// ============================================================================
+
+export {
+  // Token estimation
+  estimateTokens,
+  estimateMessageTokens,
+  estimateContentBlockTokens,
+  estimateConversationTokens,
+  estimateToolDefinitionTokens,
+  estimateSystemPromptTokens,
+  estimateRequestTokens,
+
+  // Token formatting
+  formatTokenCount,
+  formatTokenCountWithUnit,
+
+  // Token limits
+  exceedsTokenLimit,
+  remainingTokens,
+  tokenUsagePercent,
+
+  // Text truncation
+  truncateToTokens,
+  truncateMiddle,
+  smartTruncate,
+
+  // Token budget
+  createTokenBudget,
+  getAvailableTokens,
+  consumeTokens,
+  hasTokenBudget,
+} from './tokens';
+
+export type { TokenBudget } from './tokens';
+
+// ============================================================================
+// Request Caching
+// ============================================================================
+
+export {
+  // Cache class
+  RequestCache,
+
+  // Cache utilities
+  isCacheable,
+  createCacheKey,
+  getGlobalCache,
+  clearGlobalCache,
+  withCache,
+} from './cache';
+
+export type {
+  CacheEntry,
+  CacheOptions,
+  CacheStats,
+} from './cache';
+
+// ============================================================================
+// Usage Tracking
+// ============================================================================
+
+export {
+  // Usage tracker
+  UsageTracker,
+  getGlobalUsageTracker,
+  clearGlobalUsageTracker,
+
+  // Cost utilities
+  formatCost,
+  getModelPricing,
+  hasKnownPricing,
+} from './usage';
+
+export type {
+  UsageRecord,
+  UsageSummary,
+  ModelUsageSummary,
+  CostEstimate,
+  ModelPricing,
+} from './usage';
+
+// ============================================================================
+// Rate Limiting
+// ============================================================================
+
+export {
+  // Rate limiter
+  RateLimiter,
+  getGlobalRateLimiter,
+  resetGlobalRateLimiter,
+
+  // Rate limit utilities
+  withRateLimit,
+  checkRateLimit,
+  ClientRateLimitError,
+} from './rate-limiter';
+
+export type {
+  RateLimitConfig,
+  RateLimitState,
+} from './rate-limiter';
+
+// ============================================================================
+// Message Builder Utilities
+// ============================================================================
+
+export {
+  // Message creation
+  userMessage,
+  userMessageBlocks,
+  assistantMessage,
+  assistantMessageBlocks,
+
+  // Content blocks
+  textBlock,
+  toolUseBlock,
+  toolResultBlock,
+  toolResultMessage,
+  toolResultsMessage,
+  imageBlockBase64,
+  imageBlockUrl,
+  documentBlockPdf,
+
+  // System prompt
+  systemPrompt,
+  systemPromptWithCache,
+  systemPromptParts,
+  combineSystemPrompts,
+
+  // Tool definitions
+  toolDefinition,
+  simpleToolDefinition,
+
+  // Message builder
+  MessageBuilder,
+  createMessageBuilder,
+
+  // Conversation utilities
+  getLastAssistantText,
+  extractToolUses,
+  needsToolResult,
+  getPendingToolUses,
+  validateMessages,
+} from './message-builder';

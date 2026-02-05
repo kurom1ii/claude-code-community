@@ -109,7 +109,7 @@ export const enterPlanModeToolDefinition: ToolDefinition = {
  */
 export function validateEnterPlanModeInput(
   input: unknown
-): input is EnterPlanModeInput | string {
+): boolean | string {
   // EnterPlanMode không yêu cầu parameters
   return true;
 }
@@ -148,9 +148,10 @@ export function createEnterPlanModeToolHandler(
   context: ExecutionContext
 ): ToolHandler<EnterPlanModeInput, EnterPlanModeOutput> {
   return {
+    name: 'EnterPlanMode',
     definition: enterPlanModeToolDefinition,
 
-    validateInput(input: unknown): input is EnterPlanModeInput | string {
+    validateInput(input: unknown): boolean | string {
       return validateEnterPlanModeInput(input);
     },
 

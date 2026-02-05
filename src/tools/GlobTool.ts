@@ -65,7 +65,7 @@ export interface GlobToolOutput {
 const MAX_RESULTS = 1000;
 
 /** Cac thu muc mac dinh bi bo qua */
-const DEFAULT_IGNORE_DIRS = [
+export const DEFAULT_IGNORE_DIRS = [
   'node_modules',
   '.git',
   '.svn',

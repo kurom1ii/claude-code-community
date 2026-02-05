@@ -139,6 +139,13 @@ export type {
   McpServerInfo,
 } from './types';
 
+// Import types for internal use
+import type {
+  McpTransport,
+  ImplementationInfo,
+  ServerCapabilities,
+} from './types';
+
 // Export constants và utilities từ types
 export {
   JSONRPC_VERSION,

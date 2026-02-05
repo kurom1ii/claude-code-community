@@ -101,7 +101,7 @@ const DEFAULT_HEAD_LIMIT = 100;
 const MAX_RESULTS = 1000;
 
 /** Mapping tu type sang glob pattern */
-const TYPE_TO_GLOB: Record<string, string> = {
+export const TYPE_TO_GLOB: Record<string, string> = {
   js: '*.js',
   ts: '*.ts',
   tsx: '*.tsx',

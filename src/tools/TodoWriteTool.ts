@@ -107,7 +107,7 @@ const VALID_STATUSES: TodoStatus[] = ['pending', 'in_progress', 'completed'];
  */
 export function validateTodoWriteInput(
   input: unknown
-): input is TodoWriteInput | string {
+): boolean | string {
   if (!input || typeof input !== 'object') {
     return 'Input must be an object';
   }
@@ -222,9 +222,10 @@ export function createTodoWriteToolHandler(
   context: ExecutionContext
 ): ToolHandler<TodoWriteInput, TodoWriteOutput> {
   return {
+    name: 'TodoWrite',
     definition: todoWriteToolDefinition,
 
-    validateInput(input: unknown): input is TodoWriteInput | string {
+    validateInput(input: unknown): boolean | string {
       return validateTodoWriteInput(input);
     },
 

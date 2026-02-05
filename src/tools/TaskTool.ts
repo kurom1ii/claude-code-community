@@ -78,14 +78,14 @@ const DEFAULT_TASK_TIMEOUT_MS = 300000;
 const MAX_TASK_TIMEOUT_MS = 1800000;
 
 /** Cac model khuyen nghi theo loai subagent */
-const RECOMMENDED_MODELS: Record<SubagentType, string> = {
+export const RECOMMENDED_MODELS: Record<SubagentType, string> = {
   'Explore': 'claude-sonnet-4-5-20250929',
   'Plan': 'claude-opus-4-5-20251101',
   'general-purpose': 'claude-sonnet-4-5-20250929',
 };
 
 /** Mo ta cho moi loai subagent */
-const SUBAGENT_DESCRIPTIONS: Record<SubagentType, string> = {
+export const SUBAGENT_DESCRIPTIONS: Record<SubagentType, string> = {
   'Explore': 'Agent chuyen khao sat va kham pha codebase',
   'Plan': 'Agent lap ke hoach va phan tich',
   'general-purpose': 'Agent da nang xu ly nhieu loai task',

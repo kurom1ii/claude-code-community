@@ -167,7 +167,7 @@ const MAX_REFERENCES = 100;
 const MAX_COMPLETIONS = 50;
 
 /** Mapping severity tu LSP */
-const SEVERITY_MAP: Record<number, Diagnostic['severity']> = {
+export const SEVERITY_MAP: Record<number, Diagnostic['severity']> = {
   1: 'error',
   2: 'warning',
   3: 'information',
@@ -175,7 +175,7 @@ const SEVERITY_MAP: Record<number, Diagnostic['severity']> = {
 };
 
 /** Mapping symbol kind tu LSP */
-const SYMBOL_KIND_MAP: Record<number, string> = {
+export const SYMBOL_KIND_MAP: Record<number, string> = {
   1: 'File',
   2: 'Module',
   3: 'Namespace',

@@ -656,7 +656,7 @@ export async function executeTool(
 
   // Tao handler va validate
   const handler = factory(ctx);
-  const validationResult = handler.validateInput(input);
+  const validationResult = handler.validateInput(input as unknown);
 
   if (typeof validationResult === 'string') {
     return {
@@ -668,7 +668,7 @@ export async function executeTool(
 
   // Thuc thi
   try {
-    const output = await handler.execute(input, ctx);
+    const output = await handler.execute(input as never, ctx);
     return {
       success: true,
       output,

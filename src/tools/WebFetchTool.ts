@@ -67,7 +67,7 @@ const CACHE_TTL_MS = 15 * 60 * 1000;
 const DEFAULT_USER_AGENT = 'Mozilla/5.0 (compatible; ClaudeCode/1.0; +https://claude.ai)';
 
 /** Cac domain can authenticated (canh bao) */
-const AUTHENTICATED_DOMAINS = [
+export const AUTHENTICATED_DOMAINS = [
   'docs.google.com',
   'drive.google.com',
   'confluence',

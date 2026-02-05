@@ -6,6 +6,89 @@
 import type { ModelInfo, ModelAlias, Theme, ThemeColors } from '../types';
 
 // ============================================================================
+// Re-exports từ config modules
+// ============================================================================
+
+// Schemas và types
+export * from './schemas';
+
+// Enhanced types (excluding duplicates)
+export {
+  type PermissionLevel,
+  type ToolPermission,
+  type MCPServerConfig as EnhancedMCPServerConfig,
+  fromSchemaMCPServerConfig,
+  type HookEvent,
+  type HookConfig,
+  fromSchemaHooks,
+  type ClaudeConfig,
+  type ProjectConfig,
+  type ConfigSource,
+  type ConfigValue,
+  type TrackedConfig,
+  type ConfigVersion,
+  type ConfigMigration,
+  type MigrationDefinition,
+  type ConfigValidationError,
+  type ConfigValidationResult,
+  isPermissionLevel,
+  isHookEvent,
+  isTheme,
+  isVerbosity,
+} from './types';
+
+// Paths
+export * from './paths';
+
+// Loader
+export {
+  loadSettingsFile,
+  loadSettings,
+  loadManagedSettings,
+  loadEnvSettings,
+  clearSettingsCache as clearLoaderSettingsCache,
+  invalidateSettingsCache,
+  clearManagedSettingsCache,
+  parseJson,
+  isSettingsSourceEnabled,
+  getEnabledSettingsSources,
+  formatValidationErrors,
+  logSettingsError,
+  type LoadSettingsResult,
+} from './loader';
+
+// Merger
+export {
+  mergeSettings,
+  loadAndMergeSettings,
+  getSettingValue,
+  isSettingDefined,
+  type MergedSettingsResult,
+  type SettingsWithSource,
+} from './merger';
+
+// Defaults
+export {
+  DEFAULT_SETTINGS,
+  DEFAULT_CONFIG,
+  DEFAULT_PROJECT_CONFIG,
+  MINIMAL_CONFIG,
+  SECURE_CONFIG,
+  DEV_CONFIG,
+  PERFORMANCE_CONFIG,
+  ENV_DEFAULTS,
+  getDefaultValue,
+  applyDefaults,
+  getDefaultConfig,
+  getDefaultProjectConfig,
+  withDefaults,
+  applyPreset,
+  DEFAULT_THINKING_VERBS,
+  getThinkingVerbs,
+  getRandomThinkingVerb as getRandomThinkingVerbWithConfig,
+} from './defaults';
+
+// ============================================================================
 // Version Info - Thông tin phiên bản
 // ============================================================================
 
@@ -184,25 +267,6 @@ export const THEMES: Theme[] = [
 export const DEFAULT_THEME = 'dark';
 
 // ============================================================================
-// Paths - Đường dẫn cấu hình
-// ============================================================================
-
-import { homedir } from 'os';
-import { join } from 'path';
-
-/** Thư mục config của Claude */
-export const CLAUDE_CONFIG_DIR = join(homedir(), '.claude');
-
-/** File settings */
-export const SETTINGS_FILE = join(CLAUDE_CONFIG_DIR, 'settings.json');
-
-/** File sessions */
-export const SESSIONS_DIR = join(CLAUDE_CONFIG_DIR, 'sessions');
-
-/** File projects */
-export const PROJECTS_DIR = join(CLAUDE_CONFIG_DIR, 'projects');
-
-// ============================================================================
 // MCP Configuration
 // ============================================================================
 
@@ -231,23 +295,105 @@ export const SESSION_MEMORY_CONFIG = {
 };
 
 // ============================================================================
-// Thinking Verbs - Các động từ hiển thị khi thinking
+// Thinking Verbs - Các động từ hiển thị khi thinking (legacy export)
 // ============================================================================
 
-export const THINKING_VERBS = [
-  'Thinking',
-  'Pondering',
-  'Considering',
-  'Analyzing',
-  'Processing',
-  'Evaluating',
-  'Reflecting',
-  'Reasoning',
-  'Contemplating',
-  'Deliberating',
-];
+import { DEFAULT_THINKING_VERBS } from './defaults';
 
-/** Lấy random thinking verb */
+export const THINKING_VERBS = DEFAULT_THINKING_VERBS;
+
+/** Lấy random thinking verb (legacy) */
 export function getRandomThinkingVerb(): string {
   return THINKING_VERBS[Math.floor(Math.random() * THINKING_VERBS.length)];
+}
+
+// ============================================================================
+// Config Manager - Unified config access
+// ============================================================================
+
+import { loadAndMergeSettings, getSettingValue } from './merger';
+import { applyDefaults } from './defaults';
+import type { Settings } from './schemas';
+
+/** Cached merged settings */
+let cachedMergedSettings: Settings | null = null;
+let cachedProjectRoot: string | undefined = undefined;
+
+/**
+ * Get merged and validated settings
+ */
+export function getSettings(projectRoot?: string): Settings {
+  // Return cache if project root matches
+  if (cachedMergedSettings !== null && cachedProjectRoot === projectRoot) {
+    return cachedMergedSettings;
+  }
+
+  // Load, merge, and apply defaults
+  const { settings, errors } = loadAndMergeSettings(projectRoot);
+
+  // Log any errors
+  if (errors.length > 0) {
+    for (const error of errors) {
+      console.error(error);
+    }
+  }
+
+  // Apply defaults
+  const finalSettings = applyDefaults(settings);
+
+  // Cache
+  cachedMergedSettings = finalSettings;
+  cachedProjectRoot = projectRoot;
+
+  return finalSettings;
+}
+
+/**
+ * Clear settings cache (call after settings file changes)
+ */
+export function clearSettingsCache(): void {
+  cachedMergedSettings = null;
+  cachedProjectRoot = undefined;
+}
+
+/**
+ * Get a specific setting with fallback to default
+ */
+export function getSetting<K extends keyof Settings>(
+  key: K,
+  projectRoot?: string
+): Settings[K] {
+  const settings = getSettings(projectRoot);
+  return settings[key];
+}
+
+/**
+ * Get model from settings or default
+ */
+export function getConfiguredModel(projectRoot?: string): string {
+  const settings = getSettings(projectRoot);
+  return settings.model || DEFAULT_MODEL;
+}
+
+/**
+ * Check if a feature is enabled in settings
+ */
+export function isFeatureEnabled(
+  feature: 'thinking' | 'spinnerTips' | 'syntaxHighlighting' | 'promptSuggestions',
+  projectRoot?: string
+): boolean {
+  const settings = getSettings(projectRoot);
+
+  switch (feature) {
+    case 'thinking':
+      return settings.alwaysThinkingEnabled !== false;
+    case 'spinnerTips':
+      return settings.spinnerTipsEnabled !== false;
+    case 'syntaxHighlighting':
+      return settings.syntaxHighlightingDisabled !== true;
+    case 'promptSuggestions':
+      return settings.promptSuggestionEnabled !== false;
+    default:
+      return true;
+  }
 }

@@ -115,7 +115,7 @@ export class AnthropicClient {
       throw new ConnectionError('Response body is empty');
     }
 
-    yield* streamEvents(response.body);
+    return yield* streamEvents(response.body);
   }
 
   /**
@@ -197,10 +197,10 @@ export class AnthropicClient {
     stream: boolean
   ): CreateMessageRequest {
     return {
+      ...request,
       model: request.model || this.defaultModel,
       max_tokens: request.max_tokens || this.defaultMaxTokens,
       stream,
-      ...request,
     };
   }
 
@@ -223,10 +223,10 @@ export class AnthropicClient {
 
       if (!response.ok) {
         const errorBody = await response.json();
-        throw AnthropicApiError.fromResponse(errorBody, response.status, requestId);
+        throw AnthropicApiError.fromResponse(errorBody as unknown as Parameters<typeof AnthropicApiError.fromResponse>[0], response.status, requestId);
       }
 
-      return await response.json();
+      return await response.json() as CreateMessageResponse;
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') {
         throw new TimeoutError(this.timeout);
@@ -264,7 +264,7 @@ export class AnthropicClient {
 
       if (!response.ok) {
         const errorBody = await response.json();
-        throw AnthropicApiError.fromResponse(errorBody, response.status, requestId);
+        throw AnthropicApiError.fromResponse(errorBody as unknown as Parameters<typeof AnthropicApiError.fromResponse>[0], response.status, requestId);
       }
 
       return response;
@@ -439,7 +439,7 @@ export class ConversationBuilder {
    * Gửi request với streaming
    */
   async *stream(): AsyncGenerator<StreamEvent, CreateMessageResponse, undefined> {
-    yield* this.client.streamMessage(this.buildRequest());
+    return yield* this.client.streamMessage(this.buildRequest());
   }
 }
 
