@@ -1,237 +1,111 @@
-# Claude Code - Reconstructed
+# 🤖 Claude Code Community
 
-> Phien ban tai cau truc day du cua Claude Code CLI tu source da obfuscate
+> **Deobfuscated & reconstructed source code of Claude Code CLI**
 
-## Gioi thieu
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Bun](https://img.shields.io/badge/Bun-Runtime-f9f1e1?logo=bun)](https://bun.sh/)
+[![React](https://img.shields.io/badge/React-18-61dafb?logo=react)](https://react.dev/)
+[![Ink](https://img.shields.io/badge/Ink-4.0-green)](https://github.com/vadimdemedes/ink)
 
-Day la project tai cau truc lai source code cua Claude Code CLI - mot cong cu CLI chinh thuc cua Anthropic de tuong tac voi Claude AI. Source goc da bi obfuscate (lam roi code), project nay da:
+## 📋 Overview
 
-1. **Deobfuscate** file `cli.js` goc (7583 dong, 10.72MB)
-2. **Phan tich** patterns va cau truc module
-3. **Tai tao** thanh TypeScript/React modules co the doc va bao tri duoc
-4. **Build** thanh binary chay doc lap
+This project reconstructs Anthropic's Claude Code CLI from its obfuscated source into readable, maintainable TypeScript/React modules.
 
-## Cai dat
+**What's included:**
+- 🔓 Deobfuscated `cli.js` (7,583 lines → structured modules)
+- 📦 Clean TypeScript/React architecture
+- 🛠️ 10+ built-in tools (Bash, Read, Write, Edit, Glob, Grep, etc.)
+- 🎨 Ink-based terminal UI components
+- 🔌 Anthropic API client with streaming support
+
+## ⚡ Quick Start
 
 ```bash
-# Cai dat dependencies
+# Install
 bun install
 
-# Chay development mode
+# Development
 bun run dev
 
 # Build
 bun run build
 
-# Build binary
+# Compile binary
 bun run build:compile
 ```
 
-## Su dung
+## 🚀 Usage
 
 ```bash
-# Hien thi version
-./dist/claude --version
-
-# Hien thi help
-./dist/claude --help
-
-# Chat voi prompt
-./dist/claude "Hello, Claude!"
-
-# Chat interactive mode
-./dist/claude
+./dist/claude --version          # Show version
+./dist/claude --help             # Show help
+./dist/claude "Hello, Claude!"   # One-shot prompt
+./dist/claude                    # Interactive mode
 ```
 
-## Cau truc project
+## 📁 Project Structure
 
 ```
-final/
-├── src/
-│   ├── types/           # Type definitions
-│   │   └── index.ts     # Messages, Tools, Agents, MCP types
-│   │
-│   ├── config/          # Configuration
-│   │   └── index.ts     # VERSION, MODELS, THEMES, FLAGS
-│   │
-│   ├── utils/           # Utilities
-│   │   └── index.ts     # Helper functions
-│   │
-│   ├── api/             # Anthropic API client
-│   │   ├── types.ts     # API types
-│   │   ├── models.ts    # Model definitions
-│   │   ├── errors.ts    # Error classes
-│   │   ├── streaming.ts # SSE parsing
-│   │   ├── client.ts    # AnthropicClient
-│   │   └── index.ts     # Exports
-│   │
-│   ├── tools/           # Built-in tools
-│   │   ├── types.ts     # Tool types
-│   │   ├── base.ts      # BaseTool, registry
-│   │   ├── BashTool.ts  # Shell commands
-│   │   ├── ReadTool.ts  # File reading
-│   │   ├── WriteTool.ts # File writing
-│   │   ├── EditTool.ts  # String replacement
-│   │   ├── GlobTool.ts  # File search
-│   │   ├── GrepTool.ts  # Content search
-│   │   ├── TaskTool.ts  # Subagent spawning
-│   │   ├── WebFetchTool.ts  # URL fetching
-│   │   ├── WebSearchTool.ts # Web search
-│   │   ├── LSPTool.ts   # Language Server
-│   │   └── index.ts     # Exports
-│   │
-│   ├── ui/              # Ink/React components
-│   │   ├── Box.tsx      # Layout component
-│   │   ├── Text.tsx     # Text rendering
-│   │   ├── Input.tsx    # Text input
-│   │   ├── Select.tsx   # Selection
-│   │   ├── Spinner.tsx  # Loading indicators
-│   │   ├── Thinker.tsx  # Thinking animation
-│   │   ├── Divider.tsx  # Separators
-│   │   ├── StatusLine.tsx   # Status bar
-│   │   ├── MessageDisplay.tsx # Messages
-│   │   ├── ToolOutput.tsx   # Tool results
-│   │   ├── Theme.tsx    # Theme system
-│   │   └── index.tsx    # Exports
-│   │
-│   └── cli/             # CLI entry point
-│       ├── index.ts     # Commander setup
-│       └── App.tsx      # Main React app
-│
-├── dist/                # Build output
-│   ├── cli.js           # Bundled JS
-│   └── claude           # Compiled binary
-│
-├── package.json
-├── tsconfig.json
-├── REFACTOR_PROGRESS.md # Tien trinh
-└── README.md            # File nay
+src/
+├── 📂 api/        # Anthropic API client (streaming, auth, errors)
+├── 📂 cli/        # CLI entry & main React app
+├── 📂 config/     # Version, models, themes, feature flags
+├── 📂 tools/      # Built-in tools (Bash, Read, Write, Edit, Glob, Grep, LSP...)
+├── 📂 types/      # TypeScript definitions
+├── 📂 ui/         # Ink/React components (Box, Text, Spinner, StatusLine...)
+└── 📂 utils/      # Helper functions
 ```
 
-## Cac module chinh
+## 🛠️ Available Tools
 
-### API Client (`src/api/`)
+| Tool | Description | Confirmation |
+|------|-------------|:------------:|
+| 🖥️ Bash | Execute shell commands | ✅ |
+| 📖 Read | Read file contents | ❌ |
+| ✏️ Write | Write files | ✅ |
+| 🔧 Edit | String replacement edits | ✅ |
+| 🔍 Glob | Find files by pattern | ❌ |
+| 🔎 Grep | Search content in files | ❌ |
+| 🤖 Task | Spawn subagent | ❌ |
+| 🌐 WebFetch | Fetch URL content | ❌ |
+| 🔎 WebSearch | Web search | ❌ |
+| 📡 LSP | Language Server Protocol | ❌ |
+
+## 🎯 Models
 
 ```typescript
-import { AnthropicClient, createClientFromEnv } from './api';
-
-const client = createClientFromEnv();
-
-// Non-streaming
-const response = await client.createMessage({
-  model: 'claude-sonnet-4-20250514',
-  max_tokens: 1024,
-  messages: [{ role: 'user', content: 'Hello!' }],
-});
-
-// Streaming
-for await (const event of client.streamMessage(request)) {
-  if (event.type === 'content_block_delta') {
-    process.stdout.write(event.delta.text || '');
-  }
-}
+// Supported models
+opus: 'claude-opus-4-5-20251101'
+sonnet: 'claude-sonnet-4-5-20250929'
+haiku: 'claude-haiku-3-5-20250929'
 ```
 
-### Tools (`src/tools/`)
+## ⚙️ Environment Variables
 
-```typescript
-import { BashTool, ReadTool, EditTool } from './tools';
+| Variable | Description |
+|----------|-------------|
+| `ANTHROPIC_API_KEY` | 🔑 API key for authentication |
+| `CLAUDE_MODEL` | 🤖 Default model |
+| `CLAUDE_THEME` | 🎨 Theme (dark/light/monokai/solarized) |
 
-// Tao tool handler
-const bashHandler = BashTool.createHandler(context);
-const result = await bashHandler.execute({
-  command: 'ls -la',
-  timeout: 30000,
-});
-```
+## 🔬 Deobfuscation Process
 
-### UI Components (`src/ui/`)
+1. 📥 Parse original minified `cli.js`
+2. 🔍 Analyze patterns using `tweakcc` insights
+3. 🌳 AST parsing with `@babel/parser`
+4. ✨ Beautify with `prettier`
+5. 📦 Split into logical modules
+6. 🏷️ Map obfuscated → readable identifiers
+7. 📝 Generate TypeScript with full types
+8. 🔨 Build with `bun`
 
-```tsx
-import { Box, Text, Spinner, StatusLine } from './ui';
+## 📜 License
 
-function MyComponent() {
-  return (
-    <Box flexDirection="column">
-      <Text color="green">Hello!</Text>
-      <Spinner type="dots" label="Loading..." />
-      <StatusLine model="claude-sonnet" tokens={{ input: 100, output: 50 }} />
-    </Box>
-  );
-}
-```
+**UNLICENSED** - Educational/research project only.  
+Original source belongs to [Anthropic](https://anthropic.com).
 
-## Tools co san
+---
 
-| Tool | Mo ta | Yeu cau xac nhan |
-|------|-------|------------------|
-| Bash | Chay shell commands | Co |
-| Read | Doc file | Khong |
-| Write | Ghi file | Co |
-| Edit | Sua file (string replacement) | Co |
-| Glob | Tim file theo pattern | Khong |
-| Grep | Tim noi dung trong files | Khong |
-| Task | Spawn subagent | Khong |
-| WebFetch | Fetch URL | Khong |
-| WebSearch | Tim kiem web | Khong |
-| LSP | Language Server Protocol | Khong |
-
-## API Models
-
-```typescript
-// Available models
-const OPUS_MODELS = ['claude-opus-4-20250514', 'claude-opus-4-5-20251101'];
-const SONNET_MODELS = ['claude-sonnet-4-20250514', 'claude-sonnet-4-5-20250929'];
-const HAIKU_MODELS = ['claude-haiku-3-5-20250929'];
-
-// Model aliases
-const MODEL_ALIASES = {
-  opus: 'claude-opus-4-5-20251101',
-  sonnet: 'claude-sonnet-4-5-20250929',
-  haiku: 'claude-haiku-3-5-20250929',
-};
-```
-
-## Environment Variables
-
-| Bien | Mo ta |
-|------|-------|
-| `ANTHROPIC_API_KEY` | API key de xac thuc |
-| `CLAUDE_MODEL` | Model mac dinh |
-| `CLAUDE_THEME` | Theme (dark/light/monokai/solarized) |
-
-## Qua trinh Deobfuscation
-
-1. **Doc file goc**: `cli.js` (7583 dong, minified)
-2. **Phan tich patterns** tu `tweakcc` (patch tool)
-3. **Parse AST** voi `@babel/parser`
-4. **Beautify** voi `@babel/generator` + `prettier`
-5. **Chia sections** theo heuristics
-6. **Map identifiers** tu obfuscated -> readable
-7. **Tao TypeScript modules** voi types day du
-8. **Build** voi `bun`
-
-### Key patterns tim duoc:
-
-```javascript
-// Module loader
-var o = (A, q, K) => {
-  q = A.exports;
-  K(q, A);
-  return A.exports;
-};
-
-// React module: _1
-// Chalk: K6
-// Text component: f
-// Box component: kg5
-```
-
-## License
-
-UNLICENSED - Day la project nghien cuu/hoc tap.
-Source goc thuoc ve Anthropic.
-
-## Tac gia
-
-Tai cau truc boi Claude voi huong dan cua nguoi dung.
+<p align="center">
+  <sub>🔧 Reconstructed with Claude AI assistance</sub>
+</p>
